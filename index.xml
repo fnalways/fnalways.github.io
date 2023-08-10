@@ -1,4 +1,184 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yajing Wang</title><link>https://fnalways.github.io/</link><description>Recent content on Yajing Wang</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://fnalways.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://fnalways.github.io/page/about/</link><pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate><guid>https://fnalways.github.io/page/about/</guid><description>&lt;h3 id="its-me-hi-">It&amp;rsquo;s me, hi! 👋&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yajing Wang</title><link>https://fnalways.github.io/</link><description>Recent content on Yajing Wang</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://fnalways.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>DITA Tips：Map与Map的嵌套</title><link>https://fnalways.github.io/post/dita-tips-map-and-bookmap/</link><pubDate>Wed, 09 Aug 2023 00:00:00 +0000</pubDate><guid>https://fnalways.github.io/post/dita-tips-map-and-bookmap/</guid><description>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/feature.jpg" alt="Featured image of post DITA Tips：Map与Map的嵌套" />&lt;h1 id="利用dita-map组织信息">利用DITA Map组织信息&lt;/h1>
+&lt;p>DITA Map是将不同Topic和其他内容资源按照一定的结构组织起来的文档，描述了各个Topic之间的层级和关系，支持通过引用和构建层级关系将不同的Topic或submap组合在一起。根据类型定义（Document Type Definition）的不同，DITA Map的可细分为&lt;code>&amp;lt;map&amp;gt;&lt;/code>和&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>，均以&lt;code>.ditamap&lt;/code>为后缀。&lt;/p>
+&lt;h2 id="dita-map的应用场景">DITA Map的应用场景&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>组织和管理内容&lt;/strong>：Map可以将不同的DITA文件组织在一起，形成一个有层次结构的文档集合。通过Map，可以在更高级别（如Rootmap）更好地管理内容，方便查找、维护和扩展。&lt;/li>
+&lt;li>&lt;strong>控制文档输出&lt;/strong>：Map可以指定需要输出的文档、输出的格式以及输出的目标。因此，可以根据需要生成不同的交付物，比如HTML、PDF、EPUB等。&lt;/li>
+&lt;li>&lt;strong>定义文档结构&lt;/strong>：Map可以定义文档的结构和内容，包括文档的标题、摘要、作者、版权信息等。这些信息可以在生成文档时自动插入到文档中。&lt;/li>
+&lt;li>&lt;strong>定义Keyword&lt;/strong>：Map提供了一种间接的寻址机制，增强内容的可移植性，如&lt;code>&amp;lt;keydef&amp;gt;&lt;/code>。&lt;code>&amp;lt;keydef&amp;gt;&lt;/code>是&lt;code>&amp;lt;topicref&amp;gt;&lt;/code>的特殊化。&lt;/li>
+&lt;li>&lt;strong>构建Topic关系&lt;/strong>：使用Map中的主题层次结构、关系表格（&lt;code>&amp;lt;reltable&amp;gt;&lt;/code>）等，定义Topic之间或与其他非DITA内容的关系。&lt;/li>
+&lt;li>&lt;strong>支持重用和共享&lt;/strong>：Map可以引用Submap或DITA文件，实现内容的批量重用和共享。不同的文档可以共享相同的内容，减少重复工作，提高效率。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/dita-map-illustration.png"
+width="393"
+height="481"
+srcset="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/dita-map-illustration_huff28b9d249fc08b7747ccf592597f6f8_19157_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/dita-map-illustration_huff28b9d249fc08b7747ccf592597f6f8_19157_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Map organizes topics and submaps"
+class="gallery-image"
+data-flex-grow="81"
+data-flex-basis="196px"
+>&lt;/p>
+&lt;h2 id="map和bookmap">&lt;code>&amp;lt;map&amp;gt;&lt;/code>和&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>&lt;/h2>
+&lt;p>&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>是一种特殊的&lt;code>&amp;lt;map&amp;gt;&lt;/code>，包括&lt;code>&amp;lt;frontmatter&amp;gt;&lt;/code>、&lt;code>&amp;lt;backmatter&amp;gt;&lt;/code>、&lt;code>&amp;lt;appendix&amp;gt;&lt;/code>、&lt;code>&amp;lt;bookmeta&amp;gt;&lt;/code>、&lt;code>&amp;lt;author&amp;gt;&lt;/code>等特殊的标记对，多用于组织和管理书籍或其他长篇文档的结构和内容。一般而言，如果需要同源开发生成多个输出格式，如HTML、PDF、CHM，或者想要减少维护工作量，优先考虑使用&lt;code>&amp;lt;map&amp;gt;&lt;/code>。&lt;/p>
+&lt;h1 id="map的嵌套">Map的嵌套&lt;/h1>
+&lt;p>通常，一个DITA Map对应一个用户主题。例如，所有安装主题应该放在一个安装DITA地图中。然而，将整本书或帮助系统的所有主题都包含在一个地图中可能会创建一个笨重的DITA地图。&lt;/p>
+&lt;p>为了管理您的内容，而不是为您的产品、服务或技术创建一个庞大的DITA地图，可以在其他DITA地图中嵌套较小的DITA地图来创建子地图。将您的内容分成子地图有助于您管理内容。使用子地图来：&lt;/p>
+&lt;p>注：由于目前资料开发使用的样式表仅支持&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>，因此后文仅讨论&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>嵌套submap的情况，即Rootmap均为&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>。&lt;/p>
+&lt;h2 id="submap的应用场景">Submap的应用场景&lt;/h2>
+&lt;p>有了嵌套，Rootmap主要负责提供文档集合的结构信息，而Submap则指定具体的Topic集合。Submap的主要应用场景包括：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>按章节组织内容&lt;/strong>：例如，将”安装“部分变成Submap。这样不仅支持后期在其他产品中复用，同时能更好得管理不同Topic集合，尤其是当Topic数量过多时。&lt;/li>
+&lt;li>&lt;strong>协同写作&lt;/strong>：例如将手册正文划分为不同的submap之后，不同的技术作者只需专注于某一个或某几个章节的内容，无需再最后合并汇总时反复修改Rootmap。&lt;/li>
+&lt;li>&lt;strong>隔离更新频繁的内容&lt;/strong>：为了减少维护工作量和提高复用效率，可以用单独的DITA Map组织经常更新的内容。&lt;/li>
+&lt;/ul>
+&lt;h2 id="map嵌套存在的问题">Map嵌套存在的问题&lt;/h2>
+&lt;p>除了前面介绍的应用场景外，还有一种典型的需求：将产品B（通常为可独立阅读和维护的子产品，例如App）的手册内容添加到主产品的Map中，以增加产品手册的完整性，同时便于产品A、产品B的维护和更新。具体而言：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>要求1&lt;/strong>：在产品A的用户手册中，产品B的主体内容作为其中一章单独出现。&lt;/li>
+&lt;li>&lt;strong>要求2&lt;/strong>：原产品B手册中的标题层级，在产品A的手册中，均往下降一级（如章标题变成节标题）。&lt;/li>
+&lt;/ul>
+&lt;p>产品A&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;bookmap&lt;/span> &lt;span style="color:#a6e22e">xml:lang=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;en-US&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;mainbooktitle&amp;gt;&lt;/span>Product A User Manual&lt;span style="color:#f92672">&amp;lt;/mainbooktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;topics/Overview.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;topics/Mounting.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;topics/Wiring.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/bookmap&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>产品B&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;bookmap&lt;/span> &lt;span style="color:#a6e22e">xml:lang=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;en-US&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;mainbooktitle&amp;gt;&lt;/span>Product B User Manual&lt;span style="color:#f92672">&amp;lt;/mainbooktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;topics/Overview.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;topics/Operation.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;topics/Configuration.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/bookmap&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="第一种情况在chapter中引用bookmap">第一种情况：在&lt;code>&amp;lt;chapter&amp;gt;&lt;/code>中引用&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>&lt;/h3>
+&lt;p>在Rootmap中，先引用不同的Topic作为&lt;code>&amp;lt;chapter&amp;gt;&lt;/code>，再在单个&lt;code>&amp;lt;chapter&amp;gt;&lt;/code>中引用具体的Submap。这也是通用的做法。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;bookmap&lt;/span> &lt;span style="color:#a6e22e">xml:lang=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;en-US&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Overview.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Mounting.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Wiring.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Using_productB.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;topicref&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;productB.ditamap&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">format=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;ditamap&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/bookmap&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>但是实际操作中，会发现生成输出后，标题层级不符合要求。原来的章标题（L1 Heading），并没有降级为节标题（L2 Heading）。&lt;/p>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/chapter-references-bookmap.png"
+width="262"
+height="203"
+srcset="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/chapter-references-bookmap_hu5620569528c00889516c229d2c174abe_6821_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/chapter-references-bookmap_hu5620569528c00889516c229d2c174abe_6821_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="When referencing bookmap in chapter, the section numbering is wrong"
+class="gallery-image"
+data-flex-grow="129"
+data-flex-basis="309px"
+>&lt;/p>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/chapter-references-bookmap-illustration.png"
+width="1392"
+height="1232"
+srcset="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/chapter-references-bookmap-illustration_hu49f2db13f2c108dfcf326a0a0833ec1b_133676_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/chapter-references-bookmap-illustration_hu49f2db13f2c108dfcf326a0a0833ec1b_133676_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="How DITA interprets the situation"
+class="gallery-image"
+data-flex-grow="112"
+data-flex-basis="271px"
+>&lt;/p>
+&lt;h3 id="第二种情况直接引用bookmap">第二种情况：直接引用&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>&lt;/h3>
+&lt;p>在Rootmap中，直接设置&lt;code>&amp;lt;chapter&amp;gt;&lt;/code>的&lt;code>@href&lt;/code>为Submap。&lt;/p>
+&lt;p>同样，会发现生成输出后，产品B的内容并没有作为单独一章出现。&lt;/p>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/directly-reference-bookmap.png"
+width="261"
+height="183"
+srcset="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/directly-reference-bookmap_hu8580eab84b9ec6abd2158bfd51d6bcd3_5506_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/directly-reference-bookmap_hu8580eab84b9ec6abd2158bfd51d6bcd3_5506_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="When directly referencing bookmap, the headings of submap content are not demoted"
+class="gallery-image"
+data-flex-grow="142"
+data-flex-basis="342px"
+>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;bookmap&lt;/span> &lt;span style="color:#a6e22e">xml:lang=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;en-US&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;mainbooktitle&amp;gt;&lt;/span>Product A User Manual&lt;span style="color:#f92672">&amp;lt;/mainbooktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Overview.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Mounting.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Wiring.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;productB.ditamap&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">format=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;ditamap&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/bookmap&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="第三种情况bookmap引用map">第三种情况：&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>引用&lt;code>&amp;lt;map&amp;gt;&lt;/code>&lt;/h3>
+&lt;p>根据前两种情况判断，必须以在单个&lt;code>&amp;lt;chapter&amp;gt;&lt;/code>中引用具体的Submap为前提，才能满足要求1。此时如果尝试替换产品B的&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>为&lt;code>&amp;lt;map&amp;gt;&lt;/code>，会发现条件2也满足了。&lt;/p>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/bookmap-references-map.png"
+width="237"
+height="244"
+srcset="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/bookmap-references-map_hua6508f23e10ec6461d1e603d8c1b58f5_6016_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/bookmap-references-map_hua6508f23e10ec6461d1e603d8c1b58f5_6016_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="When referencing map in bookmap, the output is normal"
+class="gallery-image"
+data-flex-grow="97"
+data-flex-basis="233px"
+>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;bookmap&lt;/span> &lt;span style="color:#a6e22e">xml:lang=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;en-US&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;mainbooktitle&amp;gt;&lt;/span>Product A User Manual&lt;span style="color:#f92672">&amp;lt;/mainbooktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/booktitle&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Overview.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Mounting.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">&amp;lt;!-- ... --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;chapter&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Using_productB.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;topicref&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;productB.ditamap&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">format=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;ditamap&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/chapter&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/bookmap&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/bookmap-references-map-illustration.png"
+width="1391"
+height="581"
+srcset="https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/bookmap-references-map-illustration_hu204c6c9cef96a670b11cf03947739818_71272_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-tips-map-and-bookmap/img/bookmap-references-map-illustration_hu204c6c9cef96a670b11cf03947739818_71272_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="How DITA interprets the situation"
+class="gallery-image"
+data-flex-grow="239"
+data-flex-basis="574px"
+>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;map&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;title&amp;gt;&lt;/span>Product B User Manual&lt;span style="color:#f92672">&amp;lt;/title&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;topicref&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Overview.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;topicref&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Operation.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;topicref&lt;/span> &lt;span style="color:#a6e22e">href=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Configuration.dita&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/map&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="bookmap还是map">&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>还是&lt;code>&amp;lt;map&amp;gt;&lt;/code>？&lt;/h2>
+&lt;p>通过上述分析，可以总结得出：&lt;/p>
+&lt;ul>
+&lt;li>在当前的编辑条件下，使用&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>作为Rootmap。&lt;/li>
+&lt;li>如需在Rootmap中引用多个”章节“，使用&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>。&lt;/li>
+&lt;li>如需把包含多层Topic嵌套关系的Map（子产品的“Map”）作为一章插入到Rootmap中，使用&lt;code>&amp;lt;map&amp;gt;&lt;/code>。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>featured image from &lt;a class="link" href="https://unsplash.com/photos/a-close-up-of-a-cell-phone-with-a-blurry-background-BJFRrEkkV9c?utm_source=unsplash&amp;amp;utm_medium=referral&amp;amp;utm_content=creditShareLink" target="_blank" rel="noopener"
+>Unsplush&lt;/a>&lt;/em>&lt;/p></description></item><item><title>About</title><link>https://fnalways.github.io/page/about/</link><pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate><guid>https://fnalways.github.io/page/about/</guid><description>&lt;h3 id="its-me-hi-">It&amp;rsquo;s me, hi! 👋&lt;/h3>
 &lt;p>I&amp;rsquo;m a passionate and versatile technical writer with four years of experience in the field. My journey began with internships, where I honed my skills and developed a deep love for the art of creating clear and concise content that empowers users. My expertise lies in creating user-centric content for both software and hardware products in English and Chinese.&lt;/p>
 &lt;ul>
 &lt;li>A master&amp;rsquo;s degree from PKU&lt;/li>
