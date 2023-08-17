@@ -1,4 +1,265 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yajing Wang</title><link>https://fnalways.github.io/</link><description>Recent content on Yajing Wang</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://fnalways.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>DITA Tips：Map与Map的嵌套</title><link>https://fnalways.github.io/post/dita-tips-map-and-bookmap/</link><pubDate>Wed, 09 Aug 2023 00:00:00 +0000</pubDate><guid>https://fnalways.github.io/post/dita-tips-map-and-bookmap/</guid><description>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/feature.jpg" alt="Featured image of post DITA Tips：Map与Map的嵌套" />&lt;h1 id="利用dita-map组织信息">利用DITA Map组织信息&lt;/h1>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yajing Wang</title><link>https://fnalways.github.io/</link><description>Recent content on Yajing Wang</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 17 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://fnalways.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>DITA翻译实践：基于Fluenta的工作流</title><link>https://fnalways.github.io/post/dita-translation-with-fluenta/</link><pubDate>Thu, 17 Aug 2023 00:00:00 +0000</pubDate><guid>https://fnalways.github.io/post/dita-translation-with-fluenta/</guid><description>&lt;img src="https://fnalways.github.io/post/dita-translation-with-fluenta/featured.jpg" alt="Featured image of post DITA翻译实践：基于Fluenta的工作流" />&lt;h1 id="dita文件翻译的痛点">DITA文件翻译的痛点&lt;/h1>
+&lt;p>DITA翻译的核心原理是通过分离内容和格式，将源文档转化为可重用的组件，并通过翻译记忆库（Translation Memory）来提高翻译效率。然而，相较于传统文件的翻译，DITA文件因其应用的特殊性，会产生很多额外的问题：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>内容碎片化&lt;/strong>：由于DITA重用的特点，DITA文件的内容组织可能分散到多个文件和模块中。一方面，这可能导致翻译时上下文的丢失和不连贯性，另一方面，当翻译项目包含的DITA文件过多时，译员需要在不同的文件之间跳转。&lt;/li>
+&lt;li>&lt;strong>引用处理困难&lt;/strong>：DITA中的引用机制（如conref和keyref）使得处理引用内容的翻译变得复杂。如果技术写作项目包含大量引用（包括项目文件夹之外的引用），那么写作人员或译员需要面临一些棘手的译后处理问题。例如：如何提取需要翻译的文件、如何在翻译完成后生成新的小语种文件夹、如何保证目标文件中引用关系依然正确等。在传统翻译工作流中，这几项任务通常需要手动完成。&lt;/li>
+&lt;li>&lt;strong>源文件更新繁琐&lt;/strong>：理想条件下，翻译应该在源文件定稿后进行。但受限于实际资料开发进度以及评审滞后等因素，往往在送翻之后，原文会有规模不等的更新。常见的解决办法包括：手动提取变更的内容汇总到表格中，重新送翻；或者，将变更的文件单独提取出来送翻。无论是哪一种，都会消耗额外的人力或翻译费用。&lt;/li>
+&lt;/ul>
+&lt;h1 id="introducing-fluenta">Introducing Fluenta&lt;/h1>
+&lt;h2 id="什么是fluenta">什么是Fluenta&lt;/h2>
+&lt;p>Fluenta是一款旨在简化DITA项目翻译的开源工具。通过结合OASIS的两个开放标准DITA和XLIFF，它旨在简化DITA项目的翻译和本地化工作。Fluenta能够与翻译记忆库（TM）进行无缝集成，利用先前翻译过的文本来提高翻译效率和一致性。它可以自动匹配和应用翻译记忆库中的翻译段落，减少重复工作并确保术语和翻译的一致性。通过解析DITAMAP和DITA文件，Fluenta可以生成一个统一的XLIFF文件。&lt;/p>
+&lt;p>与常见的CAT工具不同，Fluenta专为DITA设计。官网介绍了Fluenta的特点，包括：&lt;/p>
+&lt;ul>
+&lt;li>能够解决DITA内容引用，例如&lt;code>conref&lt;/code>属性或&lt;code>keyref&lt;/code>机制。&lt;/li>
+&lt;li>支持允许自定义可翻译元素和属性的DITA专业化。&lt;/li>
+&lt;li>理解translate属性。例如，当设置&lt;code>@translate=no&lt;/code>时，该内容元素将不会被Fluenta提取。&lt;/li>
+&lt;/ul>
+&lt;h2 id="为什么是xliff文件">为什么是XLIFF文件&lt;/h2>
+&lt;p>XLIFF（XML Localization Interchange File Format）是一种XML格式，旨在促进软件和内容的本地化和翻译过程的交换和共享。它是一种开放、标准化的文件格式，由OASIS组织开发和维护（与DITA类似）。理论上，所有的CAT工具都支持翻译XLIFF文件，因此XLIFF文件可以在不同的本地化工具和环境中使用和共享。此外，XLIFF的主要特点为：&lt;/p>
+&lt;ol>
+&lt;li>结构化：XLIFF文件采用基于XML的结构，可以按照预定义的元素和属性进行组织和描述。这使得XLIFF文件易于解析和处理，并且具有良好的可扩展性。&lt;/li>
+&lt;li>分割和标记：XLIFF文件将源文本分割为可翻译的单元，例如段落、句子或标签。每个翻译单元都包含源文本和与之对应的目标语言文本。
+&amp;quot;&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;">
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;">&lt;tr>&lt;td style="vertical-align:top;padding:0;margin:0;border:0;">
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;">&lt;code>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+&lt;/span>&lt;span style="background-color:#3c3d38">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+&lt;/span>&lt;/span>&lt;span style="background-color:#3c3d38">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+&lt;/span>&lt;/span>&lt;span style="background-color:#3c3d38">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+&lt;/span>&lt;/span>&lt;span style="background-color:#3c3d38">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+&lt;/span>&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;xliff&lt;/span> &lt;span style="color:#a6e22e">version=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;1.2&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">xmlns=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;urn:oasis:names:tc:xliff:document:1.2&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;file&lt;/span> &lt;span style="color:#a6e22e">original=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;source.html&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">source-language=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;en&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">target-language=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cn&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">datatype=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;x-ditamap&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;body&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex; background-color:#3c3d38">&lt;span> &lt;span style="color:#f92672">&amp;lt;trans-unit&lt;/span> &lt;span style="color:#a6e22e">id=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;1&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex; background-color:#3c3d38">&lt;span> &lt;span style="color:#f92672">&amp;lt;source&amp;gt;&lt;/span>Hello, World!&lt;span style="color:#f92672">&amp;lt;/source&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex; background-color:#3c3d38">&lt;span> &lt;span style="color:#f92672">&amp;lt;target&amp;gt;&lt;/span>你好，世界！&lt;span style="color:#f92672">&amp;lt;/target&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex; background-color:#3c3d38">&lt;span> &lt;span style="color:#f92672">&amp;lt;/trans-unit&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/body&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/file&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/xliff&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>借助XLIFF文件，辅助翻译工具可以进一步存储翻译记忆、执行版本控制以跟踪翻译的不同阶段等。&lt;/p>
+&lt;h1 id="安装与使用fluenta">安装与使用Fluenta&lt;/h1>
+&lt;h2 id="方法一通过github下载桌面应用">方法一：通过GitHub下载桌面应用&lt;/h2>
+&lt;p>目前Fluenta分发开源版本和订阅版本（200美元/年）。如需使用开源版本，还需要进行一定的配置。&lt;/p>
+&lt;p>开发环境：&lt;/p>
+&lt;ul>
+&lt;li>Java 17 +&lt;/li>
+&lt;li>&lt;a class="link" href="https://ant.apache.org/" target="_blank" rel="noopener"
+>Apache Ant 1.10.12&lt;/a> +&lt;/li>
+&lt;/ul>
+&lt;p>安装流程：&lt;/p>
+&lt;ol>
+&lt;li>确认Java和Ant的环境变量设置正确。
+&lt;ul>
+&lt;li>JAVA_HOME：指向JDK安装路径&lt;/li>
+&lt;li>ANT_HOME：指向Ant安装路径&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>访问Fluenta的GitHub Repo：&lt;a class="link" href="https://maxprograms.com/products/fluenta.html" target="_blank" rel="noopener"
+>https://maxprograms.com/products/fluenta.html&lt;/a>&lt;/li>
+&lt;li>Fork-Checkout Repo或下载压缩文件到本地。&lt;/li>
+&lt;li>设置&lt;code>JAVA_HOME&lt;/code>的系统变量，使其指向JDK 17的安装路径。&lt;/li>
+&lt;li>从&lt;code>SWT&lt;/code>文件夹复制对应版本的&lt;code>swt.jar&lt;/code>到&lt;code>jars&lt;/code>文件夹。&lt;/li>
+&lt;li>在Fluenta的安装路径中打开命令行工具，运行&lt;code>ant&lt;/code>编译。&lt;/li>
+&lt;li>编译完成后，根据系统运行对应的批处理文件即可使用。
+&lt;ul>
+&lt;li>Windows: &lt;code>fluenta.bat&lt;/code>&lt;/li>
+&lt;li>MacOS: &lt;code>fluenta_mac.sh&lt;/code>&lt;/li>
+&lt;li>Linux: &lt;code>fluenta_linux.sh&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="方法二通过oxygen-xml-editor安装插件">方法二：通过Oxygen XML Editor安装插件&lt;/h2>
+&lt;p>自v25.0起，Oxygen XML editor 支持以插件的形式安装Fluenta并管理基于Fluenta的翻译工作流。&lt;/p>
+&lt;p>安装流程：&lt;/p>
+&lt;ol>
+&lt;li>选择 &lt;strong>Help&lt;/strong> &amp;gt; &lt;strong>Install new add-ons&lt;/strong> 打开插件对话框。&lt;/li>
+&lt;li>&lt;strong>Show add-ons from&lt;/strong> 选择 &lt;strong>&lt;a class="link" href="https://www.oxygenxml.com/InstData/Addons/default/updateSite.xml" target="_blank" rel="noopener"
+>https://www.oxygenxml.com/InstData/Addons/default/updateSite.xml&lt;/a>&lt;/strong>。&lt;/li>
+&lt;li>选择&lt;strong>Fluenta Dita Translation&lt;/strong>， 点击&lt;strong>Next&lt;/strong>。&lt;/li>
+&lt;li>勾选同意用户协议，点击&lt;strong>Finish&lt;/strong>。&lt;/li>
+&lt;li>重启Oxygen，使变更生效。&lt;/li>
+&lt;/ol>
+&lt;h1 id="实践经验分享">实践经验分享&lt;/h1>
+&lt;p>由于我使用方法一安装的Fluenta无法正常使用，因此下文以Oxygen+Fluenta插件的实际使用经历为例，分享具体的翻译工作流程。&lt;/p>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-translation-with-fluenta/img/dita-files-localization-workflow-using-oxygen-and-fluenta.png"
+width="661"
+height="861"
+srcset="https://fnalways.github.io/post/dita-translation-with-fluenta/img/_hu03ce14722e1b3c1fa1dcff91c728a917_41031_a6f14992e472542f284644d2ba1120c8.png 480w, https://fnalways.github.io/post/dita-translation-with-fluenta/img/_hu03ce14722e1b3c1fa1dcff91c728a917_41031_fa4dfb2cbd07ce2163e26b20852acd70.png 1024w"
+loading="lazy"
+alt="基于Fluenta的翻译流程"
+class="gallery-image"
+data-flex-grow="76"
+data-flex-basis="184px"
+>&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>创建Fluenta项目。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>以DITA Map Manager视图打开.ditamap文件。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>选择该DITAMAP，右键选择&lt;strong>Fluenta&lt;/strong> &amp;gt; &lt;strong>Create Project&lt;/strong>，打开创建Fluenta项目对话框。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在弹出的对话框中，输入项目名称，选择源语言并添加目标语言。&lt;/p>
+&lt;blockquote>
+&lt;p>注意：
+可选择多个目标语言。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-translation-with-fluenta/img/create-a-new-fluenta-project.png"
+width="795"
+height="497"
+srcset="https://fnalways.github.io/post/dita-translation-with-fluenta/img/create-a-new-fluenta-project_hu8cf6edc377d2303d55479ef8b4fe7867_13226_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-translation-with-fluenta/img/create-a-new-fluenta-project_hu8cf6edc377d2303d55479ef8b4fe7867_13226_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="创建Fluenta项目"
+class="gallery-image"
+data-flex-grow="159"
+data-flex-basis="383px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>点击&lt;strong>Create project&lt;/strong>，创建项目。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>生成XLIFF文件。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>以DITA Map Manager视图打开.ditamap文件。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>选择该DITAMAP，右键选择&lt;strong>Fluenta&lt;/strong> &amp;gt; &lt;strong>Generate XLIFF&lt;/strong>。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在弹出的对话框中，选择XLIFF文件的存储路径。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>勾选目标语言，点击&lt;strong>Generate&lt;/strong>。&lt;/p>
+&lt;blockquote>
+&lt;p>注：建议保持其他设置不变。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-translation-with-fluenta/img/generate-xliff.png"
+width="805"
+height="515"
+srcset="https://fnalways.github.io/post/dita-translation-with-fluenta/img/generate-xliff_huc7504adedda291dde7605105eb8e530e_16113_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-translation-with-fluenta/img/generate-xliff_huc7504adedda291dde7605105eb8e530e_16113_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="生成Xliff文件"
+class="gallery-image"
+data-flex-grow="156"
+data-flex-basis="375px"
+>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>翻译。&lt;/p>
+&lt;ul>
+&lt;li>如果由内部翻译，直接利用CAT工具打开生成的XLIFF文件开始翻译。&lt;/li>
+&lt;li>如果由外部翻译，将生成的XLIFF文件单独或以项目包的形式发送给翻译服务供应商。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-translation-with-fluenta/img/translation.png"
+width="2358"
+height="1050"
+srcset="https://fnalways.github.io/post/dita-translation-with-fluenta/img/translation_hu4911a46b50cbd04db9969c1dbc0fd779_137618_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-translation-with-fluenta/img/translation_hu4911a46b50cbd04db9969c1dbc0fd779_137618_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="翻译"
+class="gallery-image"
+data-flex-grow="224"
+data-flex-basis="538px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>审阅。&lt;/p>
+&lt;ul>
+&lt;li>利用CAT工具或LQA工具对译文进行审阅，确保没有漏译、错译等问题。&lt;/li>
+&lt;li>确认的译文可更新相应句段状态为”已翻译“。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>导入翻译好的XLIFF文件。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>以DITA Map Manager视图打开.ditamap文件。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>选择该DITAMAP，右键选择&lt;strong>Fluenta&lt;/strong> &amp;gt; &lt;strong>Import XLIFF&lt;/strong>。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在弹出的对话框中，选择翻译好的XLIFF文件。Fluenta会自动根据当前项目文件夹的构成，自动生成目标语种文件夹的对应路径。&lt;/p>
+&lt;p>&lt;img src="https://fnalways.github.io/post/dita-translation-with-fluenta/img/import-xliff.png"
+width="805"
+height="341"
+srcset="https://fnalways.github.io/post/dita-translation-with-fluenta/img/import-xliff_hu54f032062f8a8b6d4e96346638ab259a_17614_480x0_resize_box_3.png 480w, https://fnalways.github.io/post/dita-translation-with-fluenta/img/import-xliff_hu54f032062f8a8b6d4e96346638ab259a_17614_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="导入Xliff文件"
+class="gallery-image"
+data-flex-grow="236"
+data-flex-basis="566px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>点击&lt;strong>Import&lt;/strong>，导入译文。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>生成输出。&lt;/p>
+&lt;ul>
+&lt;li>在Oxygen中打开目标语种的项目文件夹，选择对应的.ditamap生成输出。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="优势">优势&lt;/h2>
+&lt;ol>
+&lt;li>&lt;strong>提高翻译效率&lt;/strong>：基于Fluenta的翻译工作流程使得翻译DITA文件更简单和流畅，而Oxygen中内置Fluenta也减少了译后文件管理的繁琐工作，能有效提高翻译效率。写作人员还可以设置好内容元素的翻译属性，让译员仅翻译“需要翻译”的内容。相应地，写作人员也可以设置选择导入状态为“已翻译”的内容。&lt;/li>
+&lt;li>&lt;strong>保证翻译质量&lt;/strong>：Fluenta集成了翻译记忆库，支持以项目（DITAMAP）为单位自动创建、更新翻译记忆。借助其他CAT工具可以有效避免“重复翻译”的问题，节省了时间和人力资源。&lt;/li>
+&lt;li>&lt;strong>格式标准，使用灵活&lt;/strong>：XLIFF格式适用于市面上的多种CAT工具，无需担心译员无法打开文件的问题；也可以转化为Word格式，方便不使用CAT工具的译员使用或进行外部审校；由于XLIFF文件是基于XML的文件格式，因此也支持识别SVG格式图片中的文本；此外，导入目标XLIFF文件之前，Fluenta会进行简单的质检，如确认标记对应正确。&lt;/li>
+&lt;/ol>
+&lt;h2 id="劣势">劣势&lt;/h2>
+&lt;ol>
+&lt;li>导入XLIFF文件后，发现仍有极个别的内容元素没有更新，无法完整导入译文。（待确认是否是工具Bug。）&lt;/li>
+&lt;li>在多语种DITA文件管理方面，导入只会在主map平级目录下新增小语种文件夹。如果有外部引用，译文会完整替换外部的DITA文件。&lt;/li>
+&lt;li>源DITA文件包括大量重用内容，而生成的XLIFF文件未将原内容和重用的内容视为同一内容，导致翻译内容增多，翻译成本相应提高。（待进一步判断是工具Bug还是设置问题。）&lt;/li>
+&lt;/ol>
+&lt;h1 id="使用建议">使用建议&lt;/h1>
+&lt;p>在“&lt;em>Using XLIFF to Translate DITA Projects&lt;/em>”一文中提到了仔细规划DITA内容的重要性，以及降低成本的相对性。&lt;/p>
+&lt;blockquote>
+&lt;p>DITA 承诺通过内容重用降低翻译成本。如果进行适当的规划，内容重用可以降低翻译成本。Topic编写一次，更新一次，并在多个可交付成果中使用。通过仔细规划，成本确实可以降低。然而，成本降低取决于项目的性质；不可能提前预测成本削减的程度。&lt;/p>
+&lt;/blockquote>
+&lt;p>根据实际实践感受，目前可以总结一些使用Fluenta的使用建议：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>提前准备&lt;/strong>：确保DITA文件内容组织合理，且没有项目文件夹之外的内容引用。&lt;/li>
+&lt;li>&lt;strong>标记非译内容元素&lt;/strong>：如果该标记对内的内容不需要翻译，设置@translate=no。&lt;/li>
+&lt;li>&lt;strong>校验文件质量和风格&lt;/strong>：确保DITA项目文件已进行简单的完整性检查和风格校验。&lt;/li>
+&lt;li>&lt;strong>核对XLIFF文件&lt;/strong>：第三方翻译完成后，将XLIFF文件导入Trados或其他CAT工具，进行简单的LQA检查（如标记对使用正确、所有译文均翻译等）。仅校对后的XLIFF文件才可以导入生成目标翻译。&lt;/li>
+&lt;li>&lt;strong>累积翻译资源&lt;/strong>：Fluenta支持将导入的XLIFF文件转换为TMX格式。翻译项目完结后，可根据需求将翻译新增的内容更新到相应的翻译记忆库中。&lt;/li>
+&lt;/ol>
+&lt;h1 id="参考资料">参考资料&lt;/h1>
+&lt;ol>
+&lt;li>&lt;a class="link" href="https://www.oxygenxml.com/doc/versions/25.0/ug-author/topics/fluenta-dita-translation-add-on.html" target="_blank" rel="noopener"
+>Fluenta DITA Translation Add-on&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://maxprograms.com/products/fluenta.html" target="_blank" rel="noopener"
+>Fluenta DITA Translation Manager&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.ditatranslation.com/articles/ditaxliff.html" target="_blank" rel="noopener"
+>Using XLIFF to Translate DITA Projects——An OASIS DITA Adoption Technical Committee Publication&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;p>Featured image fron &lt;a class="link" href="https://unsplash.com/photos/hDyO6rr3kqk?utm_source=unsplash&amp;amp;utm_medium=referral&amp;amp;utm_content=creditShareLink" target="_blank" rel="noopener"
+>Unsplush&lt;/a>&lt;/p></description></item><item><title>DITA Tips：Map与Map的嵌套</title><link>https://fnalways.github.io/post/dita-tips-map-and-bookmap/</link><pubDate>Wed, 09 Aug 2023 00:00:00 +0000</pubDate><guid>https://fnalways.github.io/post/dita-tips-map-and-bookmap/</guid><description>&lt;img src="https://fnalways.github.io/post/dita-tips-map-and-bookmap/feature.jpg" alt="Featured image of post DITA Tips：Map与Map的嵌套" />&lt;h1 id="利用dita-map组织信息">利用DITA Map组织信息&lt;/h1>
 &lt;p>DITA Map是将不同Topic和其他内容资源按照一定的结构组织起来的文档，描述了各个Topic之间的层级和关系，支持通过引用和构建层级关系将不同的Topic或submap组合在一起。根据类型定义（Document Type Definition）的不同，DITA Map的可细分为&lt;code>&amp;lt;map&amp;gt;&lt;/code>和&lt;code>&amp;lt;bookmap&amp;gt;&lt;/code>，均以&lt;code>.ditamap&lt;/code>为后缀。&lt;/p>
 &lt;h2 id="dita-map的应用场景">DITA Map的应用场景&lt;/h2>
 &lt;ul>
